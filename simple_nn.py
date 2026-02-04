@@ -20,4 +20,23 @@ X = torch.tensor([[0.,0.],[0.,1.],[1.,0.],[1.,1.]])
 y = torch.tensor([[0.],[1.],[1.],[0.]])
 
 loss_fn = nn.MSELoss()
-opt = torch.optim.SGD(model.parameters(),lr=0.01)
+opt = torch.optim.SGD(model.parameters(),lr=0.01) # Learning rate
+
+for _ in range(1000):
+  opt.zero_grad()
+  loss = loss_fn(model(X),y)
+  loss.backward()
+  opt.step()
+
+print(model(X))
+
+!pip install google-genai
+
+from google import genai
+client = genai.Client(api_key='AIzaSyCOWVHqpq5Ns2BSERtzsLwy9t7GyEUfzR4')
+
+response = client.models.generate_content(
+    model='gemini-2.5-flash',
+    contents='Why is the sky blue?'
+).text
+print(response)
